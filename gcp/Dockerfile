@@ -6,7 +6,7 @@ WORKDIR /app
 COPY . .
 RUN go mod download
 WORKDIR /app/gcp
-RUN go build -o /main
+RUN GOOS=linux GOARCH=amd64 go build -o /main
 
 ## Deploy
 FROM alpine:latest
