@@ -9,7 +9,7 @@ WORKDIR /app/gcp
 RUN GOOS=linux GOARCH=amd64 go build -o /main
 
 ## Deploy
-FROM alpine:latest
+FROM gcr.io/distroless/base-debian10
 WORKDIR /
 COPY --from=builder /main /main
 ENTRYPOINT ["/main"]
