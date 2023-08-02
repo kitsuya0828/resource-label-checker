@@ -11,6 +11,7 @@ on:
 
 env:
   GO111MODULE: on
+  REGION: asia-northeast1
   # See the output values of github.com/Kitsuya0828/resource-label-checker-terraform/gcp/shared
   WORKLOAD_IDENTITY_PROVIDER_NAME: projects/1091668953261/locations/global/workloadIdentityPools/github-actions/providers/github-actions-provider
   IMAGE_NAME: asia-northeast1-docker.pkg.dev/resource-label-checker-shared/resource-label-checker/resource-label-checker
@@ -35,7 +36,7 @@ jobs:
         uses: google-github-actions/setup-gcloud@v0.6.0
 
       - name: Authorize Docker push
-        run: gcloud auth configure-docker us-central1-docker.pkg.dev
+        run: gcloud auth configure-docker ${{env.REGION}}.pkg.dev
 
       - name: Build a docker image
         run: docker build -t ${{env.IMAGE_NAME}} -f gcp/Dockerfile .
