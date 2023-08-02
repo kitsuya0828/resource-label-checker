@@ -8,10 +8,12 @@ on:
       - "gcp/**"
       - "*.env.template"
       - "README.md"
+      - ".github/workflows/gcp.yml"
 
 env:
   GO111MODULE: on
   ECR_REGION : "ap-northeast-1"
+  ECR_REPOSITORY_NAME: "resource-label-checker-fargate"
 
 jobs:
   deploy:
@@ -35,7 +37,6 @@ jobs:
       - name: build and push docker image to ecr
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          REPOSITORY: "resource-label-checker"
         run: |
-          docker build . -f aws/Dockerfile --tag ${{ env.REGISTRY }}/${{ env.REPOSITORY }}
-          docker push ${{ env.REGISTRY }}/${{ env.REPOSITORY }}
+          docker build . -f aws/Dockerfile --tag ${{ env.REGISTRY }}/${{ env.ECR_REPOSITORY_NAME }}
+          docker push ${{ env.REGISTRY }}/${{ env.ECR_REPOSITORY_NAME }}

@@ -8,6 +8,7 @@ on:
       - "aws/**"
       - "*.env.template"
       - "README.md"
+      - ".github/workflows/aws.yml"
 
 env:
   GO111MODULE: on
