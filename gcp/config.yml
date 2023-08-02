@@ -1,0 +1,9 @@
+required-labels:
+  - env
+  - owner
+  - name
+  - managed-by
+banned-labels:
+excluded-resources:
+  - servicemanagement.googleapis.com/ManagedService
+  - serviceusage.googleapis.com/Service
