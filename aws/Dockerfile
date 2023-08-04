@@ -14,7 +14,7 @@ WORKDIR /
 COPY --from=builder /main /main
 ENTRYPOINT ["/main"]
 
-## Deploy for ECS Fargate
+## Deploy for AWS Lambda
 # FROM public.ecr.aws/lambda/provided:al2
 # WORKDIR /
 # COPY --from=build /main /main
