@@ -1,46 +1,46 @@
-name: Build and push Docker image to Artifact Registry
+# name: Build and push Docker image to Artifact Registry
 
-on:
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - "aws/**"
-      - "*.env.template"
-      - "README.md"
-      - ".github/workflows/aws.yml"
+# on:
+#   push:
+#     branches:
+#       - main
+#     paths-ignore:
+#       - "aws/**"
+#       - "*.env.template"
+#       - "README.md"
+#       - ".github/workflows/aws.yml"
 
-env:
-  GO111MODULE: on
-  REGION: asia-northeast1
-  # See the output values of github.com/Kitsuya0828/resource-label-checker-terraform/gcp/shared
-  WORKLOAD_IDENTITY_PROVIDER_NAME: projects/1091668953261/locations/global/workloadIdentityPools/github-actions/providers/github-actions-provider
-  IMAGE_NAME: asia-northeast1-docker.pkg.dev/resource-label-checker-shared/resource-label-checker/resource-label-checker
-  SERVICE_ACCOUNT_EMAIL: github-actions@resource-label-checker-shared.iam.gserviceaccount.com
+# env:
+#   GO111MODULE: on
+#   REGION: asia-northeast1
+#   # See the output values of github.com/Kitsuya0828/resource-label-checker-terraform/gcp/resource-label-checker-shared
+#   WORKLOAD_IDENTITY_PROVIDER_NAME: projects/1091668953261/locations/global/workloadIdentityPools/github-actions/providers/github-actions-provider
+#   IMAGE_NAME: asia-northeast1-docker.pkg.dev/resource-label-checker-shared/resource-label-checker/resource-label-checker
+#   SERVICE_ACCOUNT_EMAIL: github-actions@resource-label-checker-shared.iam.gserviceaccount.com
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
-    steps:
-      - name: Checkout the repository
-        uses: actions/checkout@v3
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+#     permissions:
+#       id-token: write
+#       contents: read
+#     steps:
+#       - name: Checkout the repository
+#         uses: actions/checkout@v3
 
-      - uses: google-github-actions/auth@v0
-        with:
-          workload_identity_provider: ${{env.WORKLOAD_IDENTITY_PROVIDER_NAME}}
-          service_account: ${{env.SERVICE_ACCOUNT_EMAIL}}
+#       - uses: google-github-actions/auth@v0
+#         with:
+#           workload_identity_provider: ${{env.WORKLOAD_IDENTITY_PROVIDER_NAME}}
+#           service_account: ${{env.SERVICE_ACCOUNT_EMAIL}}
 
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0.6.0
+#       - name: Set up Cloud SDK
+#         uses: google-github-actions/setup-gcloud@v0.6.0
 
-      - name: Authorize Docker push
-        run: gcloud auth configure-docker ${{env.REGION}}-docker.pkg.dev
+#       - name: Authorize Docker push
+#         run: gcloud auth configure-docker ${{env.REGION}}-docker.pkg.dev
 
-      - name: Build a docker image
-        run: docker build -t ${{env.IMAGE_NAME}} -f gcp/Dockerfile .
+#       - name: Build a docker image
+#         run: docker build -t ${{env.IMAGE_NAME}} -f gcp/Dockerfile .
 
-      - name: Push the docker image
-        run: docker push ${{env.IMAGE_NAME}}
+#       - name: Push the docker image
+#         run: docker push ${{env.IMAGE_NAME}}

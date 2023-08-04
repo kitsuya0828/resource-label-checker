@@ -1,42 +1,43 @@
-name: Build and push Docker image to ECR 
+# name: Build and push Docker image to ECR 
 
-on:
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - "gcp/**"
-      - "*.env.template"
-      - "README.md"
-      - ".github/workflows/gcp.yml"
+# on:
+#   push:
+#     branches:
+#       - main
+#     paths-ignore:
+#       - "gcp/**"
+#       - "*.env.template"
+#       - "README.md"
+#       - ".github/workflows/gcp.yml"
 
-env:
-  GO111MODULE: on
-  ECR_REGION : "ap-northeast-1"
-  ECR_REPOSITORY_NAME: "resource-label-checker-fargate"
+# env:
+#   GO111MODULE: on
+#   ECR_REGION : "ap-northeast-1"
+#   ECR_REPOSITORY_NAME: "resource-label-checker-fargate"
+#   # ECR_REPOSITORY_NAME: "resource-label-checker-lambda"
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
-    steps:
-      - name: Git clone the repository
-        uses: actions/checkout@v3
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+#     permissions:
+#       id-token: write
+#       contents: read
+#     steps:
+#       - name: Git clone the repository
+#         uses: actions/checkout@v3
           
-      - name: configure aws credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-          aws-region: ${{ env.ECR_REGION }}
+#       - name: configure aws credentials
+#         uses: aws-actions/configure-aws-credentials@v1
+#         with:
+#           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+#           aws-region: ${{ env.ECR_REGION }}
 
-      - uses: aws-actions/amazon-ecr-login@v1
-        id: login-ecr
+#       - uses: aws-actions/amazon-ecr-login@v1
+#         id: login-ecr
         
-      - name: build and push docker image to ecr
-        env:
-          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        run: |
-          docker build . -f aws/Dockerfile --tag ${{ env.REGISTRY }}/${{ env.ECR_REPOSITORY_NAME }}
-          docker push ${{ env.REGISTRY }}/${{ env.ECR_REPOSITORY_NAME }}
+#       - name: build and push docker image to ecr
+#         env:
+#           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+#         run: |
+#           docker build . -f aws/Dockerfile --tag ${{ env.REGISTRY }}/${{ env.ECR_REPOSITORY_NAME }}
+#           docker push ${{ env.REGISTRY }}/${{ env.ECR_REPOSITORY_NAME }}
